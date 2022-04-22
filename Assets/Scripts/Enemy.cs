@@ -17,9 +17,11 @@ public class Enemy : MonoBehaviour
     
     public bool canSeePlayer { get; private set; }
 
+    public GameObject renderWhenEveeInSight;
     void Start()
     {
         StartCoroutine(fovCheck());
+        renderWhenEveeInSight.SetActive(false);
     }
     
     private IEnumerator fovCheck()
@@ -36,6 +38,8 @@ public class Enemy : MonoBehaviour
     private void fov()
     {
         Collider2D[] rangeCheck = Physics2D.OverlapCircleAll(transform.position, radius, targetLayer);
+        canSeePlayer = false;
+        
         if (rangeCheck.Length > 0)
         {
             Transform target = rangeCheck[0].transform;
@@ -47,21 +51,12 @@ public class Enemy : MonoBehaviour
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
                     canSeePlayer = true;
-                }
-                else
-                {
-                    canSeePlayer = false;
+                    
                 }
             }
-            else
-            {
-                canSeePlayer = false;
-            }
         }
-        else
-        {
-            canSeePlayer = false;
-        }
+
+        renderWhenEveeInSight.SetActive(canSeePlayer);
     }
 
     private void OnDrawGizmos()
@@ -74,6 +69,18 @@ public class Enemy : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, transform.position + angle0 * radius);
+        float numberOfLines = 25.0f;
+        for (int i = 1; i < numberOfLines; i++)
+        {
+            Gizmos.color = Color.red;
+            Vector3 anglei = directionFromAngle(-transform.eulerAngles.z, -angle / 2 + (i / numberOfLines) * angle);
+            if (!Physics2D.Raycast(transform.position, anglei, radius, obstructionLayer))
+            {
+                Gizmos.DrawLine(transform.position, transform.position + anglei * radius);
+            }
+        }
+        
+        Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, transform.position + angle1 * radius);
 
         if (canSeePlayer)
