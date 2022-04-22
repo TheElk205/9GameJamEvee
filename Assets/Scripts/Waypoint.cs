@@ -52,7 +52,10 @@ public class Waypoint : MonoBehaviour
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
                     // Waypoint found. Add to neighbours
-                    neighbourWaypoints.Add(target.gameObject);
+                    if (target.gameObject != gameObject)
+                    {
+                        neighbourWaypoints.Add(target.gameObject);
+                    }
                 }
             }
         }
