@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.U2D;
 using Random = System.Random;
@@ -75,12 +76,61 @@ public class Enemy : MonoBehaviour
             {
                 Debug.LogError("Waypoint ahs no neighbours.. what the heck");
             }
+            // FInd next waypoint
             else
             {
-                int rInt = r.Next(0, wp.neighbourWaypoints.Count);
+                float[] distances = new float[wp.neighbourWaypoints.Count];
                 
-                this.comingFrom = this.currentFocus;
-                this.currentFocus = wp.neighbourWaypoints[rInt];
+                for(int i = 0; i < wp.neighbourWaypoints.Count; i++)
+                {
+                    if (wp.neighbourWaypoints[i] == comingFrom)
+                    {
+                        Debug.Log("Setting coming from to -1 to repalce later");
+                        distances[i] = -1.0f;
+                    }
+                    else
+                    {
+                        distances[i] = Vector2.Distance(transform.position,
+                            wp.neighbourWaypoints[i].transform.position);
+                    }
+                }
+                
+                float max = distances.Max();
+                int lastIndex = distances.ToList().IndexOf(-1);
+                if (lastIndex != -1)
+                {
+                    Debug.Log("Replacing last index");
+                    distances[lastIndex] = max + max * 0.2f;
+                }
+
+                // Now we have weighted distances, where the last waypoint is always the highest value
+                // We now need to calculate new random index based on these
+                float sum = distances.Sum();
+                float[] inverseDistances = new float[distances.Length];
+                for (int i = 0; i < distances.Length; i++)
+                {
+                    inverseDistances[i] = sum - distances[i];
+                }
+
+                float[] cdf = new float[distances.Length];
+                cdf[0] = inverseDistances[0];
+                for (int i = 1; i < distances.Length; i++)
+                {
+                    cdf[i] = cdf[i - 1] + inverseDistances[i];
+                }
+                
+                // I have a value now between 0 and sum
+                float random = (float)(r.NextDouble() * inverseDistances.Sum());
+                for (int i = 0; i < wp.neighbourWaypoints.Count; i++)
+                {
+                    random -= cdf[i];
+                    if (random < 0)
+                    {
+                        this.comingFrom = this.currentFocus;
+                        this.currentFocus = wp.neighbourWaypoints[i];
+                        break;
+                    }
+                }
             }
         }
     }
