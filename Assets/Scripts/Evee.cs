@@ -1,7 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+public enum CollectibleState
+{
+    IDLE,
+    CAN_COLLECT,
+    IS_HOLDING
+}
 
 public class Evee : MonoBehaviour
 {
@@ -11,11 +16,16 @@ public class Evee : MonoBehaviour
     float vertical;
 
     public float runSpeed = 20.0f;
+    public CollectibleState collectibleState = CollectibleState.IDLE;
+    public GameObject canCollectState;
 
+    public GameObject toCollect;
+    
     private float angle = 0;
     void Start ()
     {
         body = GetComponent<Rigidbody2D>(); 
+        canCollectState.SetActive(false);
     }
 
     void Update ()
@@ -27,6 +37,17 @@ public class Evee : MonoBehaviour
             Vector2 v = body.velocity;
             angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg - 90.0f; 
         }
+
+        if (collectibleState == CollectibleState.CAN_COLLECT && Input.GetKeyDown(KeyCode.Space))
+        {
+            collectibleState = CollectibleState.IS_HOLDING;
+            toCollect.transform.parent = transform;
+        }
+        else if (collectibleState == CollectibleState.IS_HOLDING && Input.GetKeyDown(KeyCode.Space))
+        {
+            collectibleState = CollectibleState.IDLE;
+            toCollect.transform.parent = null;
+        }
     }
 
     private void FixedUpdate()
@@ -35,5 +56,25 @@ public class Evee : MonoBehaviour
         
         // Rotate image
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.CompareTag("Collectible"))
+        {
+            collectibleState = CollectibleState.CAN_COLLECT;
+            canCollectState.SetActive(true);
+            toCollect = col.transform.gameObject;
+        }
+    }
+    
+    private void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.gameObject.CompareTag("Collectible") && collectibleState == CollectibleState.CAN_COLLECT)
+        {
+            collectibleState = CollectibleState.IDLE;
+            canCollectState.SetActive(false);
+            toCollect = null;
+        }
     }
 }
