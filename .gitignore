@@ -140,3 +140,5 @@ JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll.meta
 
 Assets/Resources/unityVersion.txt
 Assets/Resources/unityVersion.txt.meta
+*.log
+

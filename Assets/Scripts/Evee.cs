@@ -20,6 +20,8 @@ public class Evee : MonoBehaviour
     public GameObject canCollectState;
 
     public GameObject toCollect;
+
+    public Transform collectionGrabPoint;
     
     private float angle = 0;
     void Start ()
@@ -41,7 +43,8 @@ public class Evee : MonoBehaviour
         if (collectibleState == CollectibleState.CAN_COLLECT && Input.GetKeyDown(KeyCode.Space))
         {
             collectibleState = CollectibleState.IS_HOLDING;
-            toCollect.transform.parent = transform;
+            toCollect.transform.parent = collectionGrabPoint;
+            toCollect.transform.localPosition = Vector3.zero;
         }
         else if (collectibleState == CollectibleState.IS_HOLDING && Input.GetKeyDown(KeyCode.Space))
         {
@@ -60,7 +63,7 @@ public class Evee : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("Collectible"))
+        if (col.gameObject.CompareTag("Collectible") && collectibleState == CollectibleState.IDLE)
         {
             collectibleState = CollectibleState.CAN_COLLECT;
             canCollectState.SetActive(true);
