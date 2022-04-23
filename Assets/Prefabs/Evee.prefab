@@ -52,8 +52,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 2
   collectibleState: 0
+  interactionState: 0
   canCollectState: {fileID: 322409785603810354}
   toCollect: {fileID: 0}
+  interactWith: {fileID: 0}
   collectionGrabPoint: {fileID: 322409785273442553}
 --- !u!50 &322409784480412045
 Rigidbody2D:
@@ -101,14 +103,18 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.19061852, y: 0.614591}
-      - {x: 0.057311058, y: 0.6212672}
-      - {x: 0.036551, y: 0.6223068}
-      - {x: -0.13961983, y: 0.59253526}
-      - {x: -0.1530276, y: 0.22982314}
-      - {x: -0.2540245, y: -0.32479024}
-      - {x: -0.18572468, y: -0.63844573}
-      - {x: 0.033429265, y: -0.5470686}
+    - - {x: 0.117705345, y: 0.11722803}
+      - {x: 0.19397926, y: 0.38703883}
+      - {x: 0.1487112, y: 0.614591}
+      - {x: 0.13693476, y: 0.72603524}
+      - {x: 0.04074192, y: 0.73126554}
+      - {x: -0.2024808, y: 0.71406615}
+      - {x: -0.26198632, y: 0.30106536}
+      - {x: -0.32981348, y: 0.13571453}
+      - {x: -0.41052532, y: -0.14647079}
+      - {x: -0.32107592, y: -0.36250687}
+      - {x: -0.14800829, y: -0.39957464}
+      - {x: 0.01247561, y: -0.4213469}
       - {x: 0.20176172, y: -0.044308722}
 --- !u!58 &322409784480412047
 CircleCollider2D:
@@ -123,7 +129,7 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.040158927, y: 0.55285895}
+  m_Offset: {x: -0.07, y: 0.76}
   serializedVersion: 2
   m_Radius: 0.39486837
 --- !u!1 &322409784513005265
@@ -199,7 +205,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ea0b4772041fc498fa184a35f0553050, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 04933a76bb67a43988ab77b63e9a2458, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -234,7 +240,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322409785273442552}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.038, y: 0.446, z: 0}
+  m_LocalPosition: {x: -0.071, y: 0.697, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -266,7 +272,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322409785603810354}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.01}
+  m_LocalPosition: {x: -0.034, y: 0.31, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

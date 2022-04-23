@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,5 +32,19 @@ public class Hole : MonoBehaviour, Interactable
     public void interact()
     {
         isBig = true;
+    }
+
+    public void OnTriggerEnter2D(Collider2D col)
+    {
+        Debug.Log($"Something went in: {col.gameObject.name}");
+    }
+
+    public void OnTriggerStay2D(Collider2D other)
+    {
+        if (isBig && other.tag.Equals("Collectible") && other.transform.parent == null)
+        {
+            Debug.Log("Scored!");
+            GameObject.Destroy(other.gameObject);
+        }
     }
 }
