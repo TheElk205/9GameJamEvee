@@ -2620,6 +2620,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 322409784480412046, guid: 1ec38de62751d4174a2f102f1a310dff, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: f243fe052ef0b4c75a96004075e492c6, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ec38de62751d4174a2f102f1a310dff, type: 3}
 --- !u!1001 &968068654991991277
@@ -2676,6 +2680,10 @@ PrefabInstance:
     - target: {fileID: 968068654979101742, guid: bd749cac43ee347288e2a4e9509c4b01, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 968068654979101743, guid: bd749cac43ee347288e2a4e9509c4b01, type: 3}
+      propertyPath: radius
+      value: 3.8
       objectReference: {fileID: 0}
     - target: {fileID: 968068654979101743, guid: bd749cac43ee347288e2a4e9509c4b01, type: 3}
       propertyPath: playerRef
@@ -2930,6 +2938,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cupboard
       objectReference: {fileID: 0}
+    - target: {fileID: 6089115883085881358, guid: f4bc13bcb97a649ce85457f1a894c958, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: f243fe052ef0b4c75a96004075e492c6, type: 2}
     - target: {fileID: 6089115883085881359, guid: f4bc13bcb97a649ce85457f1a894c958, type: 3}
       propertyPath: m_RootOrder
       value: 7

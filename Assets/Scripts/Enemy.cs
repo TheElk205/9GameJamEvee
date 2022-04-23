@@ -8,18 +8,23 @@ using Random = System.Random;
 
 public class Enemy : MonoBehaviour
 {
+    [Range(0, 10)]
     public float radius = 5;
     [Range(1, 360)]
     public float angle = 45;
 
     public float walkingSpeed = 1.0f;
     public float rotationSpeed = 0.05f;
+
+    // Wait for n seconds until we give up and walk to nearest waypint again
+    public float waitForSecondsGiveUp = 2.0f;
     
     public LayerMask targetLayer;
     public LayerMask obstructionLayer;
     public LayerMask waypointLayer;
 
     public Evee playerRef;
+    public float playerLastSeen = 0.0f;
     
     public bool canSeePlayer { get; private set; }
 
@@ -198,6 +203,7 @@ public class Enemy : MonoBehaviour
                 if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer))
                 {
                     canSeePlayer = true;
+                    playerLastSeen = Time.time;
                 }
             }
         }
@@ -205,7 +211,15 @@ public class Enemy : MonoBehaviour
         renderWhenEveeInSight.SetActive(canSeePlayer);
         if (canSeePlayer && playerRef.mode == EveeMode.MISCHIEF)
         {
-            Debug.Log("ANGEERRR");
+            currentFocus = playerRef.gameObject;
+        }
+
+        // Releasing current target if player is out of sight
+        // and has not been seen for a few seconds
+        if (!canSeePlayer && currentFocus == playerRef.gameObject && waitForSecondsGiveUp + playerLastSeen < Time.time)
+        {
+            currentFocus = null;
+            findNearestWaypoint();
         }
     }
 
