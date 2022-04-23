@@ -6,8 +6,7 @@ public class StuffProducer : MonoBehaviour
 {
     public ProgressBar progressBar;
     public GameObject toGeneratePrefab;
-    public int generationAmount = 3;
-
+    
     public float generationSpeed = 50.0f;
     public float currentProgress = 0.0f;
     public bool isActive = false;
@@ -30,6 +29,8 @@ public class StuffProducer : MonoBehaviour
                 isActive = false;
                 progressBar.gameObject.SetActive(false);
                 isFinished = true;
+                GameObject generated = GameObject.Instantiate(toGeneratePrefab);
+                generated.transform.position = this.transform.position;
             }
         }
     }
