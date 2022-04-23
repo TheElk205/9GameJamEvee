@@ -16,6 +16,12 @@ public enum InteractionState
     IS_INTERACTING
 }
 
+public enum EveeMode
+{
+    NORMAL,
+    MISCHIEF
+}
+
 public class Evee : MonoBehaviour
 {
     Rigidbody2D body;
@@ -33,6 +39,7 @@ public class Evee : MonoBehaviour
     public GameObject interactWith;
 
     public Transform collectionGrabPoint;
+    public EveeMode mode = EveeMode.NORMAL;
     
     private float angle = 0;
     void Start ()
@@ -56,11 +63,17 @@ public class Evee : MonoBehaviour
             collectibleState = CollectibleState.IS_HOLDING;
             toCollect.transform.parent = collectionGrabPoint;
             toCollect.transform.localPosition = Vector3.zero;
+            Collectible cb = toCollect.GetComponent<Collectible>();
+            if (cb != null && !cb.isAllowed)
+            {
+                mode = EveeMode.MISCHIEF;
+            }
         }
         else if (collectibleState == CollectibleState.IS_HOLDING && Input.GetKeyDown(KeyCode.Space))
         {
             collectibleState = CollectibleState.IDLE;
             toCollect.transform.parent = null;
+            mode = EveeMode.NORMAL;
         }
         else if (interactionState == InteractionState.CAN_INTERACT && Input.GetKeyDown(KeyCode.Space))
         {
