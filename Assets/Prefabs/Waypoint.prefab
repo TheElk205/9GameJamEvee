@@ -127,11 +127,7 @@ MonoBehaviour:
   obstructionLayer:
     serializedVersion: 2
     m_Bits: 1152
-  neighbourWaypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  neighbourWaypoints: []
 --- !u!61 &6811874668655243587
 BoxCollider2D:
   m_ObjectHideFlags: 0

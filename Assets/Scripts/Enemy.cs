@@ -251,7 +251,7 @@ public class Enemy : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
+        // UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
         
         Vector3 angle0 = directionFromAngle(-transform.eulerAngles.z, -angle / 2);
         Vector3 angle1 = directionFromAngle(-transform.eulerAngles.z, angle / 2);

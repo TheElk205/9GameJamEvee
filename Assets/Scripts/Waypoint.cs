@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+// [ExecuteInEditMode]
 public class Waypoint : MonoBehaviour
 {
     public float radius = 1.0f;
@@ -17,12 +17,6 @@ public class Waypoint : MonoBehaviour
         StartCoroutine(fovCheck());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     private IEnumerator fovCheck()
     {
         WaitForSeconds wait = new WaitForSeconds(0.2f);
@@ -38,6 +32,11 @@ public class Waypoint : MonoBehaviour
     {
         Collider2D[] rangeCheck = Physics2D.OverlapCircleAll(transform.position, radius, waypointLayer);
 
+        if (neighbourWaypoints == null)
+        {
+            neighbourWaypoints = new List<GameObject>();
+        }
+        
         neighbourWaypoints.Clear();
         
         if (rangeCheck.Length > 0)

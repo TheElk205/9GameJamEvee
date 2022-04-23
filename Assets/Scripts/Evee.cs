@@ -33,19 +33,20 @@ public class Evee : MonoBehaviour
     public CollectibleState collectibleState = CollectibleState.IDLE;
     [FormerlySerializedAs("interactioNState")] public InteractionState interactionState = InteractionState.IDLE;
     
-    public GameObject canCollectState;
+    public SpriteRenderer canCollectState;
 
     public GameObject toCollect;
     public GameObject interactWith;
 
     public Transform collectionGrabPoint;
     public EveeMode mode = EveeMode.NORMAL;
+    public Sprite carryStuffIcon;
     
     private float angle = 0;
     void Start ()
     {
         body = GetComponent<Rigidbody2D>(); 
-        canCollectState.SetActive(false);
+        canCollectState.gameObject.SetActive(false);
     }
 
     void Update ()
@@ -63,6 +64,7 @@ public class Evee : MonoBehaviour
             collectibleState = CollectibleState.IS_HOLDING;
             toCollect.transform.parent = collectionGrabPoint;
             toCollect.transform.localPosition = Vector3.zero;
+            canCollectState.gameObject.SetActive(false);
             Collectible cb = toCollect.GetComponent<Collectible>();
             if (cb != null && !cb.isAllowed)
             {
@@ -111,7 +113,8 @@ public class Evee : MonoBehaviour
         if (col.gameObject.CompareTag("Collectible") && collectibleState == CollectibleState.IDLE)
         {
             collectibleState = CollectibleState.CAN_COLLECT;
-            canCollectState.SetActive(true);
+            canCollectState.gameObject.SetActive(true);
+            canCollectState.sprite = carryStuffIcon;
             toCollect = col.gameObject;
         }
         // We can only interact if we are not holding anything
@@ -120,6 +123,13 @@ public class Evee : MonoBehaviour
                  collectibleState != CollectibleState.IS_HOLDING)
         {
             interactionState = InteractionState.CAN_INTERACT;
+            Interactable inter = col.GetComponent<Interactable>();
+            if (inter && !inter.isFinished)
+            {
+                canCollectState.sprite = col.GetComponent<Interactable>().actionIcon;
+                canCollectState.gameObject.SetActive(true);
+            }
+            
             interactWith = col.gameObject;
         }
     }
@@ -129,12 +139,13 @@ public class Evee : MonoBehaviour
         if (col.gameObject.CompareTag("Collectible") && collectibleState == CollectibleState.CAN_COLLECT)
         {
             collectibleState = CollectibleState.IDLE;
-            canCollectState.SetActive(false);
+            canCollectState.gameObject.SetActive(false);
             toCollect = null;
         }
         else if (col.gameObject.CompareTag("Interactible") && interactionState == InteractionState.CAN_INTERACT)
         {
             interactionState = InteractionState.IDLE;
+            canCollectState.gameObject.SetActive(false);
             interactWith = null;
         }
     }

@@ -7,7 +7,8 @@ public abstract class Interactable : MonoBehaviour
     public float currentProgress = 0.0f;
     public float resetAfterSeconds = -1;
     public ProgressBar progressBar;
-    
+
+    public Sprite actionIcon;
     public abstract void interact();
     
     public bool isInteracting = false;

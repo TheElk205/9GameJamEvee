@@ -52,6 +52,7 @@ MonoBehaviour:
   currentProgress: 0
   resetAfterSeconds: -1
   progressBar: {fileID: 6136939831859968165}
+  actionIcon: {fileID: 155750865, guid: 962a7a880cf1f4cc4b943c0ffe50a747, type: 3}
   isInteracting: 0
   isFinished: 0
   holeSmall: {fileID: 7612385262449830336}
