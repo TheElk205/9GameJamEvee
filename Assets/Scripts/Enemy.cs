@@ -34,6 +34,18 @@ public class Enemy : MonoBehaviour
     
     public GameObject renderWhenEveeInSight;
     public Rigidbody2D body;
+
+    [Range(0,100)]
+    public float collectAggroSpeed = 10.0f;
+    [Range(0,100)]
+    public float loseAggroSpeed = 5.0f;
+    
+    [Range(0,100)]
+    public float keepAggroFor = 10.0f;
+    
+    public float currentAggro = 0;
+    public ProgressBar aggroProgress;
+    public float lastAggroRecorded;
     
     void Start()
     {
@@ -63,6 +75,19 @@ public class Enemy : MonoBehaviour
             Vector2 v = body.velocity;
             var rotationAngle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg - 90.0f; 
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.AngleAxis(rotationAngle, Vector3.forward), rotationSpeed);
+        }
+
+        aggroProgress.progress = currentAggro;
+
+        if (canSeePlayer && playerRef.mode == EveeMode.MISCHIEF)
+        {
+            currentAggro += Time.deltaTime * collectAggroSpeed;
+            lastAggroRecorded = Time.time;
+        }
+        else if (lastAggroRecorded + keepAggroFor < Time.time)
+        {
+            currentAggro -= Time.deltaTime * loseAggroSpeed;
+            currentAggro = Math.Max(currentAggro, 0.0f);
         }
     }
 
