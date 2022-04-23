@@ -157,7 +157,7 @@ MonoBehaviour:
   radius: 2
   angle: 121
   walkingSpeed: 1
-  rotationSpeed: 0.05
+  rotationSpeed: 0.16
   targetLayer:
     serializedVersion: 2
     m_Bits: 64

@@ -54,10 +54,10 @@ public class Enemy : MonoBehaviour
 
         if (walkTowardsWaypoint)
         {
-            body.velocity = currentFocus.transform.position - transform.position;
+            body.velocity = (currentFocus.transform.position - transform.position).normalized * walkingSpeed;
             Vector2 v = body.velocity;
             var rotationAngle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg - 90.0f; 
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(rotationAngle, Vector3.forward), rotationSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.AngleAxis(rotationAngle, Vector3.forward), rotationSpeed);
         }
     }
 
