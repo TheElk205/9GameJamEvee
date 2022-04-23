@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Collectible
+  - Interactible
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - waypoint
   - collectible
   - hide
-  - 
+  - interactable
   - 
   - 
   - 
