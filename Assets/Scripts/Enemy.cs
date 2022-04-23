@@ -46,6 +46,8 @@ public class Enemy : MonoBehaviour
     public float currentAggro = 0;
     public ProgressBar aggroProgress;
     public float lastAggroRecorded;
+
+    public StuffProducer currentlyProducing;
     
     void Start()
     {
@@ -69,12 +71,33 @@ public class Enemy : MonoBehaviour
         // Walk towards next waypoint
         // Repeat
 
+        // Doing nothing while we are producing
+        if (currentlyProducing != null && !currentlyProducing.isFinished)
+        {
+            Debug.Log("Producing. Not moving");
+        }
+        if (currentlyProducing != null && currentlyProducing.isFinished)
+        {
+            Debug.Log("Finished Producing, restarting");
+            currentlyProducing.reactivate();
+            currentlyProducing = null;
+            Debug.Log($"Looking for new focus ignoring: {currentFocus.name}");
+            findNearestWaypoint(currentFocus);
+            walkTowardsWaypoint = true;
+            Debug.Log($"Walking towards new focus: {currentFocus.name}");
+        }
+        
         if (walkTowardsWaypoint)
         {
             body.velocity = (currentFocus.transform.position - transform.position).normalized * walkingSpeed;
             Vector2 v = body.velocity;
             var rotationAngle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg - 90.0f; 
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.AngleAxis(rotationAngle, Vector3.forward), rotationSpeed);
+        }
+        else
+        {
+            Debug.Log("Not moving");
+            body.velocity = Vector3.zero;
         }
 
         aggroProgress.progress = currentAggro;
@@ -98,91 +121,109 @@ public class Enemy : MonoBehaviour
         if (wp == walkTowardsWaypoint)
         {
             Debug.Log("We found a waypoint!");
-            // walkTowardsWaypoint = false;
-            // body.velocity = Vector2.zero;
-            
-            Random r = new Random();
-            if (wp.neighbourWaypoints.Count == 0)
+            StuffProducer sp = collision.GetComponent<StuffProducer>();
+            if (sp)
             {
-                Debug.LogError("Waypoint ahs no neighbours.. what the heck");
+                Debug.Log("We found a stuff producer! Starting it.");
+                sp.isActive = true;
+                currentlyProducing = sp;
+                walkTowardsWaypoint = false;
             }
-            // FInd next waypoint
             else
             {
-                float[] distances = new float[wp.neighbourWaypoints.Count];
-                
-                for(int i = 0; i < wp.neighbourWaypoints.Count; i++)
-                {
-                    if (wp.neighbourWaypoints[i] == comingFrom)
-                    {
-                        Debug.Log("Setting coming from to -1 to repalce later");
-                        distances[i] = -1.0f;
-                    }
-                    else
-                    {
-                        distances[i] = Vector2.Distance(transform.position,
-                            wp.neighbourWaypoints[i].transform.position);
-                    }
-                }
-                
-                float max = distances.Max();
-                int lastIndex = distances.ToList().IndexOf(-1);
-                if (lastIndex != -1)
-                {
-                    Debug.Log("Replacing last index");
-                    distances[lastIndex] = max + max * 0.5f;
-                }
+                selectNewWaypointAsFocus(wp);
+            }
+        }
+    }
 
-                // Now we have weighted distances, where the last waypoint is always the highest value
-                // We now sort their inverse now in ascending order
-                List<Tuple<int, float>> tuples = new List<Tuple<int, float>>();
-                float sum = distances.Sum();
-                float sumInverted = 0.0f;
-                for (int i = 0; i < distances.Length; i++)
+    private void selectNewWaypointAsFocus(Waypoint wp)
+    {
+        Random r = new Random();
+        if (wp == null || wp.neighbourWaypoints == null || wp.neighbourWaypoints.Count == 0)
+        {
+            Debug.LogError("Waypoint has no neighbours.. what the heck");
+            return;
+        }
+        // FInd next waypoint
+        else
+        {
+            float[] distances = new float[wp.neighbourWaypoints.Count];
+
+            for (int i = 0; i < wp.neighbourWaypoints.Count; i++)
+            {
+                if (wp.neighbourWaypoints[i] == comingFrom)
                 {
-                    sumInverted += (sum - distances[i]);
-                    tuples.Add(new Tuple<int, float>(i, sum - distances[i]));
+                    Debug.Log("Setting coming from to -1 to repalce later");
+                    distances[i] = -1.0f;
                 }
-                
-                tuples.Sort((a, b) => a.Item2.CompareTo(b.Item2));
-                // Now we calculate a cdf
-                float[] cdf = new float[tuples.Count];
-                cdf[0] = tuples[0].Item2;
-                for (int i = 1; i < tuples.Count; i++)
+                else
                 {
-                    cdf[i] = cdf[i - 1] + tuples[i].Item2;
+                    distances[i] = Vector2.Distance(transform.position,
+                        wp.neighbourWaypoints[i].transform.position);
                 }
-                
-                // I have a value now between 0 and sum
-                float random = (float)(r.NextDouble() * cdf.Sum());
-                for (int i = 0; i < wp.neighbourWaypoints.Count; i++)
+            }
+
+            float max = distances.Max();
+            int lastIndex = distances.ToList().IndexOf(-1);
+            if (lastIndex != -1)
+            {
+                Debug.Log("Replacing last index");
+                distances[lastIndex] = max + max * 0.5f;
+            }
+
+            // Now we have weighted distances, where the last waypoint is always the highest value
+            // We now sort their inverse now in ascending order
+            List<Tuple<int, float>> tuples = new List<Tuple<int, float>>();
+            float sum = distances.Sum();
+            float sumInverted = 0.0f;
+            for (int i = 0; i < distances.Length; i++)
+            {
+                sumInverted += (sum - distances[i]);
+                tuples.Add(new Tuple<int, float>(i, sum - distances[i]));
+            }
+
+            tuples.Sort((a, b) => a.Item2.CompareTo(b.Item2));
+            // Now we calculate a cdf
+            float[] cdf = new float[tuples.Count];
+            cdf[0] = tuples[0].Item2;
+            for (int i = 1; i < tuples.Count; i++)
+            {
+                cdf[i] = cdf[i - 1] + tuples[i].Item2;
+            }
+
+            // I have a value now between 0 and sum
+            float random = (float) (r.NextDouble() * cdf.Sum());
+            for (int i = 0; i < wp.neighbourWaypoints.Count; i++)
+            {
+                random -= cdf[i];
+                if (random <= 0)
                 {
-                    random -= cdf[i];
-                    if (random <= 0)
-                    {
-                        this.comingFrom = this.currentFocus;
-                        Debug.Log($"Selected index: {tuples[i].Item1}");
-                        this.currentFocus = wp.neighbourWaypoints[tuples[i].Item1];
-                        break;
-                    }
+                    this.comingFrom = this.currentFocus;
+                    // Debug.Log($"Selected index: {tuples[i].Item1}");
+                    this.currentFocus = wp.neighbourWaypoints[tuples[i].Item1];
+                    break;
                 }
             }
         }
     }
-    
-    private void findNearestWaypoint()
+
+    private void findNearestWaypoint(GameObject ignore = null)
     {
         Collider2D[] rangeCheck = Physics2D.OverlapCircleAll(transform.position, 20, waypointLayer);
 
         if (rangeCheck.Length == 0)
         {
-            Debug.LogError("No waypoint found. We should start working forward now. But this should never happen");
+            Debug.LogError("No waypoint found. We should start walking forward now. But this should never happen");
         }
 
         float shortestDistance = float.MaxValue;
         Waypoint nextWaypoint = null;
         foreach (var hit in rangeCheck)
         {
+            if (hit.gameObject == ignore)
+            {
+                continue;
+            }
             Vector2 directionToTarget = (hit.transform.position - transform.position).normalized;
             float distanceToTarget = Vector2.Distance(transform.position, hit.transform.position);
             // Is Waypoint behind an obstacle?
@@ -244,7 +285,7 @@ public class Enemy : MonoBehaviour
         if (!canSeePlayer && currentFocus == playerRef.gameObject && waitForSecondsGiveUp + playerLastSeen < Time.time)
         {
             currentFocus = null;
-            findNearestWaypoint();
+            findNearestWaypoint(comingFrom);
         }
     }
 
