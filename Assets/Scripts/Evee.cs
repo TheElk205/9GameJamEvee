@@ -75,7 +75,7 @@ public class Evee : MonoBehaviour
             toCollect.transform.parent = null;
             mode = EveeMode.NORMAL;
         }
-        else if (interactionState == InteractionState.CAN_INTERACT && Input.GetKeyDown(KeyCode.Space))
+        else if (interactionState == InteractionState.CAN_INTERACT && Input.GetKey(KeyCode.Space))
         {
             Interactable it = interactWith.GetComponentInParent<Interactable>();
             Debug.Log("Interacting");

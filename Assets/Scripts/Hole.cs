@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class Hole : MonoBehaviour, Interactable
+public class Hole : Interactable
 {
     public GameObject holeSmall;
     public GameObject holeBig;
@@ -27,11 +27,14 @@ public class Hole : MonoBehaviour, Interactable
             holeSmall.SetActive(!isBig);
             isBigLast = isBig;
         }
+        base.Update();
     }
-
-    public void interact()
+    
+    public override void interact()
     {
-        isBig = true;
+        Debug.Log("Interacting");
+        isInteracting = true;
+        // isBig = true;
     }
 
     public void OnTriggerEnter2D(Collider2D col)
