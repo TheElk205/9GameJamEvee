@@ -136,11 +136,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1450033915497393740, guid: 6cb28b40493c44e61a93a864207db698, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.3
+      value: 8.23
       objectReference: {fileID: 0}
     - target: {fileID: 1450033915497393740, guid: 6cb28b40493c44e61a93a864207db698, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.03
+      value: 1.37
       objectReference: {fileID: 0}
     - target: {fileID: 1450033915497393740, guid: 6cb28b40493c44e61a93a864207db698, type: 3}
       propertyPath: m_LocalPosition.z
@@ -763,7 +763,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -7.470619, y: -3.2870727}
+  m_Offset: {x: -7.231571, y: -3.2870727}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -774,7 +774,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.340795, y: 1.3984327}
+  m_Size: {x: 3.818891, y: 1.3984327}
   m_EdgeRadius: 0
 --- !u!61 &471264835
 BoxCollider2D:
@@ -1461,7 +1461,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: 205db19c5aa994f608229efb0d9b9c71, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c78b380c7241948e5959a8998f8204b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2704,11 +2704,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 968068654979101742, guid: bd749cac43ee347288e2a4e9509c4b01, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.75
+      value: -5.97
       objectReference: {fileID: 0}
     - target: {fileID: 968068654979101742, guid: bd749cac43ee347288e2a4e9509c4b01, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.15
+      value: 0.58
       objectReference: {fileID: 0}
     - target: {fileID: 968068654979101742, guid: bd749cac43ee347288e2a4e9509c4b01, type: 3}
       propertyPath: m_LocalPosition.z

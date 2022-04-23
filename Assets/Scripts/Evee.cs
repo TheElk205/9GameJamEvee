@@ -54,7 +54,7 @@ public class Evee : MonoBehaviour
         vertical = Input.GetAxisRaw("Vertical");
         if (horizontal != 0 || vertical != 0)
         {
-            Vector2 v = body.velocity;
+            Vector2 v = new Vector2(horizontal * runSpeed, vertical * runSpeed);
             angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg - 90.0f; 
         }
 
