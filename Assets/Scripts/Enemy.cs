@@ -100,34 +100,39 @@ public class Enemy : MonoBehaviour
                 if (lastIndex != -1)
                 {
                     Debug.Log("Replacing last index");
-                    distances[lastIndex] = max + max * 0.2f;
+                    distances[lastIndex] = max + max * 0.5f;
                 }
 
                 // Now we have weighted distances, where the last waypoint is always the highest value
-                // We now need to calculate new random index based on these
+                // We now sort their inverse now in ascending order
+                List<Tuple<int, float>> tuples = new List<Tuple<int, float>>();
                 float sum = distances.Sum();
-                float[] inverseDistances = new float[distances.Length];
+                float sumInverted = 0.0f;
                 for (int i = 0; i < distances.Length; i++)
                 {
-                    inverseDistances[i] = sum - distances[i];
+                    sumInverted += (sum - distances[i]);
+                    tuples.Add(new Tuple<int, float>(i, sum - distances[i]));
                 }
-
-                float[] cdf = new float[distances.Length];
-                cdf[0] = inverseDistances[0];
-                for (int i = 1; i < distances.Length; i++)
+                
+                tuples.Sort((a, b) => a.Item2.CompareTo(b.Item2));
+                // Now we calculate a cdf
+                float[] cdf = new float[tuples.Count];
+                cdf[0] = tuples[0].Item2;
+                for (int i = 1; i < tuples.Count; i++)
                 {
-                    cdf[i] = cdf[i - 1] + inverseDistances[i];
+                    cdf[i] = cdf[i - 1] + tuples[i].Item2;
                 }
                 
                 // I have a value now between 0 and sum
-                float random = (float)(r.NextDouble() * inverseDistances.Sum());
+                float random = (float)(r.NextDouble() * cdf.Sum());
                 for (int i = 0; i < wp.neighbourWaypoints.Count; i++)
                 {
                     random -= cdf[i];
-                    if (random < 0)
+                    if (random <= 0)
                     {
                         this.comingFrom = this.currentFocus;
-                        this.currentFocus = wp.neighbourWaypoints[i];
+                        Debug.Log($"Selected index: {tuples[i].Item1}");
+                        this.currentFocus = wp.neighbourWaypoints[tuples[i].Item1];
                         break;
                     }
                 }
