@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa863d28a34dc4962b91cf290e9f9f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionSpeed: 50
+  interactionSpeed: 20
   currentProgress: 0
   resetAfterSeconds: -1
   progressBar: {fileID: 6136939831859968165}

@@ -82,11 +82,19 @@ public class Evee : MonoBehaviour
             if (it != null)
             {
                 it.interact();
+                if (interactWith.GetComponent<Food>())
+                {
+                    mode = EveeMode.MISCHIEF;
+                }
             }
             else
             {
                 Debug.Log("Nothing to found to interact with");
             }
+        }
+        else if (collectibleState != CollectibleState.IS_HOLDING)
+        {
+            mode = EveeMode.NORMAL;
         }
     }
 
