@@ -17,6 +17,7 @@ public class StuffProducer : MonoBehaviour
     {
         progressBar.gameObject.SetActive(false);
     }
+    
     void Update()
     {
         if (isActive)
