@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 6040702755260238344}
   - component: {fileID: 6040702755260238345}
   - component: {fileID: 2992347461525202528}
+  - component: {fileID: -2196385467112622740}
   m_Layer: 9
   m_Name: Sock
   m_TagString: Collectible
@@ -170,3 +171,16 @@ PolygonCollider2D:
       - {x: -0.030291736, y: -0.21435702}
       - {x: 0.29788864, y: 0.008640528}
       - {x: 0.20029831, y: 0.2049517}
+--- !u!114 &-2196385467112622740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6040702755260238343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db90d7e703224c88acea5298f04c373, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAllowed: 0

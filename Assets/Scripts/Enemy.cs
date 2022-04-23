@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
     public LayerMask obstructionLayer;
     public LayerMask waypointLayer;
 
-    public GameObject playerRef;
+    public Evee playerRef;
     
     public bool canSeePlayer { get; private set; }
 
@@ -203,6 +203,10 @@ public class Enemy : MonoBehaviour
         }
 
         renderWhenEveeInSight.SetActive(canSeePlayer);
+        if (canSeePlayer && playerRef.mode == EveeMode.MISCHIEF)
+        {
+            Debug.Log("ANGEERRR");
+        }
     }
 
     private void OnDrawGizmos()
