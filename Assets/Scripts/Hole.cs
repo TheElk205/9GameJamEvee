@@ -21,6 +21,7 @@ public class Hole : Interactable
     // Update is called once per frame
     void Update()
     {
+        isBig = isFinished;
         if (isBig != isBigLast)
         {
             holeBig.SetActive(isBig);
@@ -34,7 +35,6 @@ public class Hole : Interactable
     {
         Debug.Log("Interacting");
         isInteracting = true;
-        // isBig = true;
     }
 
     public void OnTriggerEnter2D(Collider2D col)

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Collectible
   - Interactible
+  - Evee
   layers:
   - Default
   - TransparentFX
