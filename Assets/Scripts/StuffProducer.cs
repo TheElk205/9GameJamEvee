@@ -38,5 +38,6 @@ public class StuffProducer : MonoBehaviour
     public void reactivate()
     {
         isFinished = false;
+        currentProgress = 0.0f;
     }
 }

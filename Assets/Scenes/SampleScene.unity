@@ -1626,10 +1626,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food
       objectReference: {fileID: 0}
-    - target: {fileID: 6040702755260238343, guid: 8a913cf9fa9e94c08a8ab4fb3f5af7fc, type: 3}
-      propertyPath: m_TagString
-      value: Interactible
-      objectReference: {fileID: 0}
     - target: {fileID: 6040702755260238344, guid: 8a913cf9fa9e94c08a8ab4fb3f5af7fc, type: 3}
       propertyPath: m_RootOrder
       value: 1
