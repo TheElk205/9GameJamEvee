@@ -41,6 +41,10 @@ public class Evee : MonoBehaviour
     public Transform collectionGrabPoint;
     public EveeMode mode = EveeMode.NORMAL;
     public Sprite carryStuffIcon;
+
+    public ProgressBar shitOMeter;
+    [Range(0, 100)]
+    public float currentShitLevel;
     
     private float angle = 0;
     void Start ()
@@ -51,6 +55,7 @@ public class Evee : MonoBehaviour
 
     void Update ()
     {
+        shitOMeter.progress = currentShitLevel;
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
         if (horizontal != 0 || vertical != 0)
