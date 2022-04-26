@@ -14,6 +14,8 @@ public abstract class Interactable : MonoBehaviour
     public bool isInteracting = false;
     public bool isFinished = false;
 
+    public IsFinished notfyWhenFinished;
+    
     public void Start()
     {
         progressBar.gameObject.SetActive(false);
@@ -26,7 +28,6 @@ public abstract class Interactable : MonoBehaviour
             Debug.Log("Updating current progress");
             currentProgress += Time.deltaTime * interactionSpeed;
             isInteracting = false;
-           
         }
         if (currentProgress >= 100)
         {
@@ -42,4 +43,5 @@ public abstract class Interactable : MonoBehaviour
         }
         progressBar.gameObject.SetActive(!(isFinished || currentProgress <= 0.0f));
     }
+    public delegate void IsFinished(float amount);
 }

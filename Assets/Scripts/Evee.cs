@@ -13,7 +13,8 @@ public enum InteractionState
 {
     IDLE,
     CAN_INTERACT,
-    IS_INTERACTING
+    IS_INTERACTING,
+    HAS_TO_SHIT
 }
 
 public enum EveeMode
@@ -41,7 +42,8 @@ public class Evee : MonoBehaviour
     public Transform collectionGrabPoint;
     public EveeMode mode = EveeMode.NORMAL;
     public Sprite carryStuffIcon;
-
+    public Sprite shitIcon;
+    
     public ProgressBar shitOMeter;
     [Range(0, 100)]
     public float currentShitLevel;
@@ -56,6 +58,11 @@ public class Evee : MonoBehaviour
     void Update ()
     {
         shitOMeter.progress = currentShitLevel;
+        if (currentShitLevel >= 100.0f)
+        {
+            interactionState = InteractionState.HAS_TO_SHIT;
+        }
+
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
         if (horizontal != 0 || vertical != 0)
@@ -89,7 +96,8 @@ public class Evee : MonoBehaviour
             if (it != null)
             {
                 it.interact();
-                if (interactWith.GetComponent<Food>())
+                it.notfyWhenFinished = FoodFinished;
+                Food fd = interactWith.GetComponent<Food>();
                 {
                     mode = EveeMode.MISCHIEF;
                 }
@@ -105,6 +113,11 @@ public class Evee : MonoBehaviour
         }
     }
 
+    public void FoodFinished(float amount)
+    {
+        this.currentShitLevel += amount;
+    }
+    
     private void FixedUpdate()
     {  
         body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);

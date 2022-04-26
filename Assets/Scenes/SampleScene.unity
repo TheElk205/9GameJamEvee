@@ -1920,6 +1920,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1425021365287130233, guid: 8a913cf9fa9e94c08a8ab4fb3f5af7fc, type: 3}
+      propertyPath: shitAmount
+      value: 101
+      objectReference: {fileID: 0}
     - target: {fileID: 6040702755260238343, guid: 8a913cf9fa9e94c08a8ab4fb3f5af7fc, type: 3}
       propertyPath: m_Name
       value: Food
@@ -3436,7 +3440,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1068360265339311449, guid: d733d4d21bab848b2a3ca75309e0a6d9, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1068360265395118405, guid: d733d4d21bab848b2a3ca75309e0a6d9, type: 3}
       propertyPath: m_RootOrder
